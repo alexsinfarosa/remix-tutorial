@@ -1,3 +1,4 @@
+import {Form, useTransition} from '@remix-run/react'
 import styles from './NewNote.css'
 
 export function links() {
@@ -5,8 +6,11 @@ export function links() {
 }
 
 export default function NewNote() {
+  const transition = useTransition()
+  const isSubmitting = transition.state === 'submitting'
+
   return (
-    <form method="post" id="note-form">
+    <Form method="post" id="note-form">
       <p>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" required />
@@ -16,9 +20,11 @@ export default function NewNote() {
         <textarea id="content" name="content" rows={5} required />
       </p>
       <div className="form-actions">
-        <button>Add Note</button>
+        <button disabled={isSubmitting}>
+          {isSubmitting ? 'Sumbitting...' : 'Add Note'}
+        </button>
       </div>
-    </form>
+    </Form>
   )
 }
 
