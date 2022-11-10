@@ -10,6 +10,13 @@ export function links() {
   return [...linksNewNote(), ...linksNoteList()]
 }
 
+export function meta() {
+  return {
+    title: 'All Notes',
+    description: 'A page where you view your notes...',
+  }
+}
+
 // the action is called (before the loader) only when a non-GET request is made
 export async function action({request}: ActionArgs) {
   const formData = await request.formData()

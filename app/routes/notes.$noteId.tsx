@@ -1,4 +1,4 @@
-import {Link, useLoaderData} from '@remix-run/react'
+import {Link, useCatch, useLoaderData} from '@remix-run/react'
 import styles from '~/styles/note-details.css'
 import type {LoaderArgs} from '@remix-run/node'
 import {json} from '@remix-run/node'
@@ -8,12 +8,29 @@ export function links() {
   return [{rel: 'stylesheet', href: styles}]
 }
 
+// The data property is the data exported by the loader function
+export function meta({data}: {data: {title: string; description: string}}) {
+  if (!data) {
+    return {
+      title: 'Note Page',
+      description: 'The note details',
+    }
+  }
+
+  const {title, description} = data
+  return {
+    title,
+    description,
+  }
+}
+
 export async function loader({params}: LoaderArgs) {
   const notes = await getStoredNotes()
   const note = notes.find(n => n.id === params.noteId)
 
   if (!note) {
-    throw new Error('Note not found')
+    // throw new Error('Note not found')
+    throw json({message: `Could not find note ${params.noteId}`}, {status: 404})
   }
   return json(note)
 }
@@ -47,6 +64,20 @@ export function ErrorBoundary({error}: {error: Error}) {
       <p>
         Back to <Link to="/">Safety</Link>
       </p>
+    </main>
+  )
+}
+
+export function CatchBoundary() {
+  const caught = useCatch()
+
+  return (
+    <main className="error">
+      <h1>Caught</h1>
+      <p>Status: {caught.status}</p>
+      <pre style={{overflowWrap: 'break-word', whiteSpace: 'pre-wrap'}}>
+        <code>{JSON.stringify(caught.data, null, 4)}</code>
+      </pre>
     </main>
   )
 }
