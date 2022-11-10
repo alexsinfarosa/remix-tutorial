@@ -3,7 +3,7 @@ import NoteList, {links as linksNoteList} from '~/components/NoteList'
 import {json, redirect} from '@remix-run/node'
 import {getStoredNotes, storeNotes} from '~/models/notes'
 import type {LoaderArgs, ActionArgs} from '@remix-run/node'
-import {useLoaderData} from '@remix-run/react'
+import {Link, useLoaderData} from '@remix-run/react'
 import type {Note} from '~/models/notes'
 
 export function links() {
@@ -54,6 +54,24 @@ export default function NotesPage() {
     <main>
       <NewNote></NewNote>
       <NoteList notes={reversed}></NoteList>
+    </main>
+  )
+}
+
+export function ErrorBoundary({error}: {error: Error}) {
+  return (
+    <main className="error">
+      <h1>Error</h1>
+      <p>{error.message}</p>
+
+      <p>The stack trace is:</p>
+      <pre style={{overflowWrap: 'break-word', whiteSpace: 'pre-wrap'}}>
+        {error.stack}
+      </pre>
+
+      <p>
+        Back to <Link to="/">Safety</Link>
+      </p>
     </main>
   )
 }
