@@ -21,3 +21,7 @@ export default function NewNote() {
     </form>
   )
 }
+
+// <form> default method is 'get'
+// <form> default action is '.', the current active path
+// the button within the form will be responsible for submitting the form

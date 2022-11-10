@@ -7,7 +7,6 @@ export function links() {
 export default function NotesPage() {
   return (
     <main>
-      <h1>Note Page</h1>
       <NewNote></NewNote>
     </main>
   )
