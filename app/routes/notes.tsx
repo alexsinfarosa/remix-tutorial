@@ -15,14 +15,25 @@ export async function action({request}: ActionArgs) {
   const formData = await request.formData()
   const data = Object.fromEntries(formData)
 
+  // Add simple validation
+  if (typeof data.title !== 'string') {
+    throw new Error('Title must be a string')
+  }
+  // Just for fun...
+  if (data.title === 'Title') {
+    // an action can also return data. The data can be accessed using the useActionData hook
+    return {message: 'The title of a note cannot be "Title"'}
+  }
+
   const notes: Note[] = await getStoredNotes()
   data.id = new Date().toISOString()
-  const updatedNotes = [...[data], ...notes]
+  const updatedNotes = [...[data], ...notes] as Note[]
 
   await storeNotes(updatedNotes)
 
   // Adding artificial delay
   await new Promise<void>(res => setTimeout(() => res(), 2000))
+
   return redirect(`/notes`)
 }
 
@@ -36,7 +47,7 @@ export default function NotesPage() {
 
   // sort ISO date string lexicographically
   const reversed = notes.sort((a: Note, b: Note) =>
-    a.id < b.id ? -1 : a.id > b.id ? 1 : 0,
+    a.id < b.id ? 1 : a.id > b.id ? -1 : 0,
   )
 
   return (

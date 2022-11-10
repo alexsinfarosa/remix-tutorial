@@ -1,11 +1,16 @@
-import {Form, useTransition} from '@remix-run/react'
+import {Form, useActionData, useTransition} from '@remix-run/react'
 import styles from './NewNote.css'
 
 export function links() {
   return [{rel: 'stylesheet', href: styles}]
 }
 
+type actionData = {
+  message: string
+}
+
 export default function NewNote() {
+  const actionData = useActionData<actionData>() // <-- not sure about this.
   const transition = useTransition()
   const isSubmitting = transition.state === 'submitting'
 
@@ -13,7 +18,8 @@ export default function NewNote() {
     <Form method="post" id="note-form">
       <p>
         <label htmlFor="title">Title</label>
-        <input type="text" id="title" name="title" required />
+        <input type="text" id="title" name="title" required min={5} />
+        {actionData?.message && <small>{actionData.message}</small>}
       </p>
       <p>
         <label htmlFor="content">Content</label>
