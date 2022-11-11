@@ -9,8 +9,11 @@ import {
   useCatch,
 } from '@remix-run/react'
 
-import styles from '~/styles/main.css'
-import MainNavigation from '~/components/MainNavigation'
+import styles from '~/styles/shared.css'
+
+export function links() {
+  return [{rel: 'stylesheet', href: styles}]
+}
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -18,21 +21,24 @@ export const meta: MetaFunction = () => ({
   viewport: 'width=device-width,initial-scale=1',
 })
 
-export function links() {
-  return [{rel: 'stylesheet', href: styles}]
-}
-
 export default function App() {
   return (
     <html lang="en">
       <head>
         <Meta />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
         <Links />
       </head>
       <body>
-        <header>
-          <MainNavigation></MainNavigation>
-        </header>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
