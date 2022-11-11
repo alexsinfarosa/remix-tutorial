@@ -1,7 +1,5 @@
-export default function ExpensesRawPage() {
-  return (
-    <div>
-      <h1>Expenses Raw Page</h1>
-    </div>
-  )
+import {DUMMIE_DATA} from './__app/expenses.analysis'
+
+export async function loader() {
+  return DUMMIE_DATA
 }
