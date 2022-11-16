@@ -1,11 +1,26 @@
-import {Link, useActionData} from '@remix-run/react'
+import {Link, useActionData, useSubmit} from '@remix-run/react'
 
 export default function ExpenseForm() {
   const errors = useActionData()
   const today = new Date().toISOString().slice(0, 10) // yields something like 2023-09-10
 
+  const submit = useSubmit()
+  // we can submit the form to the server programmatically
+  function handleSubmit(event) {
+    event.preventDefault()
+
+    submit(event.target, {
+      method: 'POST',
+    })
+  }
+
   return (
-    <form method="post" className="form" id="expense-form">
+    <form
+      method="post"
+      className="form"
+      id="expense-form"
+      onSubmit={handleSubmit}
+    >
       <p>
         <label htmlFor="title">Expense Title</label>
         <input type="text" id="title" name="title" required maxLength={30} />
