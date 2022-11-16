@@ -10,7 +10,7 @@ export function addExpense({
     data: {
       title,
       amount: +amount,
-      date,
+      date: new Date(date),
     },
   })
 }
