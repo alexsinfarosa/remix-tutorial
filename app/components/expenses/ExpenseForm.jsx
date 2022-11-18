@@ -1,14 +1,19 @@
 import {
   Form,
   Link,
-  useLoaderData,
+  useMatches,
   useActionData,
+  useParams,
   useTransition as useNavigation,
 } from '@remix-run/react'
 
 export default function ExpenseForm() {
-  const data = useLoaderData()
-  const defaultValues = data ? data.expense : {title: '', amount: '', date: ''}
+  // const data = useLoaderData()
+  const params = useParams()
+  const matches = useMatches()
+  const expenses = matches.find(m => m.id === 'routes/__app/expenses').data
+  const expense = expenses.find(e => e.id === Number(params.id))
+  const defaultValues = expense ? expense : {title: '', amount: '', date: ''}
 
   const errors = useActionData()
   const today = new Date().toISOString().slice(0, 10) // yields something like 2023-09-10
