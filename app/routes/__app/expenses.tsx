@@ -11,6 +11,7 @@ export async function loader() {
 
 export default function ExpensesPage() {
   const expenses = useLoaderData<typeof loader>()
+  const isExpenses = expenses && expenses.length !== 0
 
   return (
     <>
@@ -26,7 +27,16 @@ export default function ExpensesPage() {
             <span>Load Raw Data</span>
           </a>
         </section>
-        <ExpensesList expenses={expenses}></ExpensesList>
+        {isExpenses ? (
+          <ExpensesList expenses={expenses}></ExpensesList>
+        ) : (
+          <section id="no-expenses">
+            <h1>No Expenses Found</h1>
+            <p>
+              Start <Link to="add">adding some </Link>today.
+            </p>
+          </section>
+        )}
       </main>
     </>
   )
