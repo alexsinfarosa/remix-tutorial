@@ -1,11 +1,20 @@
 import {
   Form,
   Link,
+  useMatches,
   useActionData,
+  useParams,
   useTransition as useNavigation,
 } from '@remix-run/react'
 
 export default function ExpenseForm() {
+  // const data = useLoaderData()
+  const params = useParams()
+  const matches = useMatches()
+  const expenses = matches.find(m => m.id === 'routes/__app/expenses').data
+  const expense = expenses.find(e => e.id === Number(params.id))
+  const defaultValues = expense ? expense : {title: '', amount: '', date: ''}
+
   const errors = useActionData()
   const today = new Date().toISOString().slice(0, 10) // yields something like 2023-09-10
 
@@ -24,14 +33,21 @@ export default function ExpenseForm() {
 
   return (
     <Form
-      method="post"
+      method={expense ? 'patch' : 'post'}
       className="form"
       id="expense-form"
       // onSubmit={handleSubmit}
     >
       <p>
         <label htmlFor="title">Expense Title</label>
-        <input type="text" id="title" name="title" required maxLength={30} />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          maxLength={30}
+          defaultValue={defaultValues.title}
+        />
       </p>
 
       <div className="form-row">
@@ -44,11 +60,21 @@ export default function ExpenseForm() {
             min="0"
             step="0.01"
             required
+            defaultValue={defaultValues.amount}
           />
         </p>
         <p>
           <label htmlFor="date">Date</label>
-          <input type="date" id="date" name="date" max={today} required />
+          <input
+            type="date"
+            id="date"
+            name="date"
+            max={today}
+            required
+            defaultValue={
+              defaultValues.date ? defaultValues.date.slice(0, 10) : ''
+            }
+          />
         </p>
       </div>
       {errors && (
