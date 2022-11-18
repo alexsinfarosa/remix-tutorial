@@ -33,7 +33,7 @@ export default function ExpenseForm() {
 
   return (
     <Form
-      method="post"
+      method={expense ? 'patch' : 'post'}
       className="form"
       id="expense-form"
       // onSubmit={handleSubmit}
