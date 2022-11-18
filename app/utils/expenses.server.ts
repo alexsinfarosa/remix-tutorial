@@ -14,3 +14,11 @@ export function addExpense({
     },
   })
 }
+
+export function getExpenses() {
+  return prisma.expense.findMany({orderBy: {date: 'desc'}})
+}
+
+export function getExpense(id: Expense['id']) {
+  return prisma.expense.findUnique({where: {id}})
+}
