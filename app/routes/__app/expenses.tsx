@@ -22,7 +22,7 @@ export default function ExpensesPage() {
             <FaPlus></FaPlus>
             <span>Add Expense</span>
           </Link>
-          <a href="/expensese/raw">
+          <a href="/expenses/raw">
             <FaDownload></FaDownload>
             <span>Load Raw Data</span>
           </a>

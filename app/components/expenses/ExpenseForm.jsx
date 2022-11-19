@@ -31,6 +31,10 @@ export default function ExpenseForm() {
   //   })
   // }
 
+  if (params.id && !expense) {
+    return <div>Expense not found</div>
+  }
+
   return (
     <Form
       method={expense ? 'patch' : 'post'}

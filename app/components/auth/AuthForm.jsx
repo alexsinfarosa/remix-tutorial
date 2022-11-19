@@ -3,10 +3,13 @@ import {
   Form,
   Link,
   useSearchParams,
+  useActionData,
   useTransition as useNavigation,
 } from '@remix-run/react'
 
 function AuthForm() {
+  const data = useActionData()
+  console.log(data)
   const [searchParams] = useSearchParams()
   const navigation = useNavigation()
   const authMode = searchParams.get('mode') || 'login'
@@ -30,10 +33,8 @@ function AuthForm() {
         <input type="password" id="password" name="password" minLength={7} />
       </p>
       <div className="form-actions">
-        <button
-          disabled={isSubmitting ? 'Authentication...' : submitBtnCaption}
-        >
-          {submitBtnCaption}
+        <button disabled={isSubmitting}>
+          {isSubmitting ? 'Authentication...' : submitBtnCaption}
         </button>
         <Link to={authMode === 'login' ? '?mode=signup' : '?mode=login'}>
           {toggleBtnCaption}
