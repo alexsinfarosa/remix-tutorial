@@ -1,7 +1,8 @@
 import type {ActionArgs} from '@remix-run/node'
-import {redirect} from '@remix-run/node'
+import {json, redirect} from '@remix-run/node'
 import AuthForm from '~/components/auth/AuthForm'
 import styles from '~/styles/auth.css'
+import {validateEmail} from '~/utils/validation.server'
 
 export function links() {
   return [{rel: 'stylesheet', href: styles}]
@@ -12,8 +13,29 @@ export async function action({request}: ActionArgs) {
   const authMode = searchParams.get('mode') || 'login'
 
   const formData = await request.formData()
-  const credentials = Object.fromEntries(formData)
-  console.log(credentials)
+  const email = formData.get('email')
+  const password = formData.get('password')
+
+  if (!validateEmail(email)) {
+    return json(
+      {errors: {email: 'Email is invalid', password: null}},
+      {status: 400},
+    )
+  }
+
+  if (typeof password !== 'string' || password.length === 0) {
+    return json(
+      {errors: {email: null, password: 'Password is required'}},
+      {status: 400},
+    )
+  }
+
+  if (password.length < 8) {
+    return json(
+      {errors: {email: null, password: 'Password is too short'}},
+      {status: 400},
+    )
+  }
 
   if (authMode === 'login') {
     // log in

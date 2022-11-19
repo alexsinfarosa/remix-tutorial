@@ -1,5 +1,5 @@
-import {DUMMIE_DATA} from './__app/expenses.analysis'
+import {getExpenses} from '~/utils/expenses.server'
 
 export async function loader() {
-  return DUMMIE_DATA
+  return getExpenses()
 }
