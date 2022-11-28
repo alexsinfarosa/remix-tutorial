@@ -26,12 +26,13 @@ function AuthForm() {
       </div>
       <p>
         <label htmlFor="email">Email Address</label>
-        <input type="email" id="email" name="email" required />
+        <input id="email" name="email" required />
       </p>
       <p>
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" minLength={7} />
       </p>
+
       <div className="form-actions">
         <button disabled={isSubmitting}>
           {isSubmitting ? 'Authentication...' : submitBtnCaption}

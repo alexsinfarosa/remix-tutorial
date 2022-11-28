@@ -2,6 +2,7 @@ import type {ActionArgs} from '@remix-run/node'
 import {json, redirect} from '@remix-run/node'
 import AuthForm from '~/components/auth/AuthForm'
 import styles from '~/styles/auth.css'
+import {signup} from '~/utils/auth.server'
 import {validateEmail} from '~/utils/validation.server'
 
 export function links() {
@@ -41,9 +42,9 @@ export async function action({request}: ActionArgs) {
     // log in
   } else {
     //sign up
+    await signup(email, password)
+    return redirect('/expenses')
   }
-
-  return redirect(``)
 }
 
 export default function AuthPage() {
