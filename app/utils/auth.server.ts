@@ -38,9 +38,8 @@ export async function signup(email: string, password: string) {
   }
 
   const passwordHash = await hash(password, 12)
-  console.log(passwordHash)
-
-  await prisma.user.create({data: {email, password: password}})
+  const user = await prisma.user.create({data: {email, password: passwordHash}})
+  return createUserSession(user.id, '/expenses')
 }
 
 export async function login(email: string, password: string) {
